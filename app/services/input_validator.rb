@@ -1,22 +1,22 @@
 class InputValidator
-  def self.valid_placement_index?(tic_tac_toe, placement_index)
-    new(tic_tac_toe, placement_index).valid_placement_index?
+  def self.valid_placement_index?(game, placement_index)
+    new(game, placement_index).valid_placement_index?
   end
 
   def board
-    tic_tac_toe.board
+    game.board
   end
 
-  attr_reader :tic_tac_toe, :placement_index
+  attr_reader :game, :placement_index
 
-  def initialize(tic_tac_toe, placement_index)
-    @tic_tac_toe = tic_tac_toe
+  def initialize(game, placement_index)
+    @game = game
     @placement_index = placement_index
   end
 
   def valid_placement_index?
     validate_placement_index
-    tic_tac_toe.input_errors.none?
+    game.input_errors.none?
   end
 
   private
@@ -31,9 +31,9 @@ class InputValidator
   end
 
   def validate_placement_index
-    tic_tac_toe.input_errors = {}
+    game.input_errors = {}
     possible_input_errors.each do |error_key, message|
-      tic_tac_toe.input_errors[error_key] = message if send("#{error_key}?")
+      game.input_errors[error_key] = message if send("#{error_key}?")
     end
   end
 

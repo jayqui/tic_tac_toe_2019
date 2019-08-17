@@ -1,7 +1,4 @@
-require 'pry'
-
-require_relative "game.rb"
-require_relative "services/cli_sequences.rb"
+require_relative "services/cli_sequences.rb" # why necessary?
 
 class TicTacToe
   include CliSequences

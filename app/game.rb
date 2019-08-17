@@ -1,11 +1,3 @@
-require 'pry'
-
-require_relative "player.rb"
-require_relative "services/a_i_move_chooser.rb"
-require_relative "services/cli_sequences.rb"
-require_relative "services/input_validator.rb"
-require_relative "services/win_checker.rb"
-
 class Game
   include CliSequences
 
@@ -55,7 +47,7 @@ class Game
     if whose_turn.human?
       placement_index = request_placement_index
     else
-      placement_index = AIMoveChooser.call(board: board, protagonist_piece: whose_turn.piece)
+      placement_index = AIMoveChooser.call(game: self, protagonist_piece: whose_turn.piece)
     end
 
     place(placement_index.to_i)
