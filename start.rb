@@ -1,4 +1,4 @@
 require_relative "app/tic_tac_toe.rb"
 
 # LET'S PLAY!!
-TicTacToe.start
+TicTacToe.new.start

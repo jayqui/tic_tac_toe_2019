@@ -3,12 +3,25 @@ module CliSequences
     puts "Welcome to Tic Tac Toe!"
   end
 
-  def say_draw
-    puts "It's a draw!"
-  end
+  def request_player_info(piece)
+    puts "\nShould player #{piece} be Human (H) or AI? (A)"
+    print "> "
+    h_or_a = gets.chomp&.[](0)&.downcase
+    while !%w[h a].include?(h_or_a)
+      puts "Please enter H for human or A for AI."
+      print "> "
+      h_or_a = gets.chomp
+    end
 
-  def say_winner(name_or_identifier)
-    puts "#{name_or_identifier} wins!"
+    # puts "\nWhat is the name for Player #{piece}?"
+    # print "> "
+    # player_name = gets.chomp
+
+    player_name = h_or_a == "h" ? "Human" : "Computer"
+
+    puts "Welcome, #{player_name}!"
+
+    { name: player_name, is_human: h_or_a == "h" }
   end
 
   def say_print_board(board)
@@ -29,5 +42,13 @@ module CliSequences
   def say_bad_input(error_message)
     puts error_message
     print "> "
+  end
+
+  def say_draw
+    puts "It's a draw!"
+  end
+
+  def say_winner(name_or_identifier)
+    puts "#{name_or_identifier} wins!"
   end
 end
