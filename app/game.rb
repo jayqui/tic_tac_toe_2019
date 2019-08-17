@@ -1,6 +1,7 @@
 require 'pry'
 
 require_relative "player.rb"
+require_relative "services/a_i_move_chooser.rb"
 require_relative "services/cli_sequences.rb"
 require_relative "services/input_validator.rb"
 require_relative "services/win_checker.rb"
@@ -51,10 +52,10 @@ class Game
   def turn
     say_take_turn("#{whose_turn.piece} (#{whose_turn.name})", board)
 
-    placement_index = gets.chomp
-    while invalid_input?(placement_index)
-      input_errors.each_value { |error_message| say_bad_input(error_message) }
-      placement_index = gets.chomp
+    if whose_turn.human?
+      placement_index = request_placement_index
+    else
+      placement_index = AIMoveChooser.call(board: board, protagonist_piece: whose_turn.piece)
     end
 
     place(placement_index.to_i)

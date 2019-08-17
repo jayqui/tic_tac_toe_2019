@@ -24,6 +24,16 @@ module CliSequences
     { name: player_name, is_human: h_or_a == "h" }
   end
 
+  def request_placement_index
+    placement_index = gets.chomp
+    while invalid_input?(placement_index)
+      input_errors.each_value { |error_message| say_bad_input(error_message) }
+      placement_index = gets.chomp
+    end
+
+    placement_index
+  end
+
   def say_print_board(board)
     board.
       map { |square| square.nil? ? "_" : square }.

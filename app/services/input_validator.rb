@@ -22,6 +22,7 @@ class InputValidator
   private
 
   def square_taken?
+    return false unless ("0".."8").include?(placement_index)
     !board[placement_index.to_i].nil?
   end
 
