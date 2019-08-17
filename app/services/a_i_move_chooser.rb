@@ -5,18 +5,30 @@ class AIMoveChooser
 
   attr_reader :board, :protagonist_piece
 
+  PROTAGONIST_WINS = 10
+  NOBODY_WINS = 0
+  ANTAGONIST_WINS = -10
+
   def initialize(board:, protagonist_piece:)
     @board = board
     @protagonist_piece = protagonist_piece
   end
 
   def choose_square
-    choose_random
+    # choose_random
   end
 
   private
 
+  def antagonist_piece
+    protagonist_piece == "X" ? "O" : "X"
+  end
+
   def choose_random
-    board.each_index.select { |idx| board[idx].nil? }.sample
+    empty_indices.sample
+  end
+
+  def empty_indices
+    board.each_index.select { |idx| board[idx].nil? }
   end
 end
