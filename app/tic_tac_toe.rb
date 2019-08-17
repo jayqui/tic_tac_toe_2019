@@ -1,3 +1,5 @@
+require_relative "game.rb"
+require_relative "player.rb"
 require_relative "services/cli_sequences.rb" # why necessary?
 
 class TicTacToe

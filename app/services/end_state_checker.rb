@@ -1,20 +1,23 @@
-class WinChecker
-  def self.call(board:, piece:)
-    new(board: board, piece: piece).win?
-  end
-
+class EndStateChecker
   attr_reader :board, :piece
 
-  def initialize(board:, piece:)
+  def initialize(board)
     @board = board
-    @piece = piece
   end
 
-  def win?
+  def win?(piece)
+    @piece = piece
+
     nw_se_diagonal_win? ||
     ne_sw_diagonal_win? ||
     vertical_win? ||
     horizontal_win?
+  end
+
+  def draw?
+    return false if win?("X") || win?("O")
+    board.each { |square| return false if square.nil? }
+    true
   end
 
   private

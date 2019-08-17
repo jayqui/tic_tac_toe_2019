@@ -1,3 +1,8 @@
+require_relative "services/a_i_move_chooser.rb" # seems necessary for testing . . .
+require_relative "services/cli_sequences.rb" # seems necessary for testing . . .
+require_relative "services/end_state_checker.rb" # seems necessary for testing . . .
+require_relative "services/input_validator.rb" # seems necessary for testing . . .
+
 class Game
   include CliSequences
 
@@ -32,13 +37,11 @@ class Game
   end
 
   def win?(piece)
-    WinChecker.call(board: board, piece: piece)
+    EndStateChecker.new(board).win?(piece)
   end
 
   def cats_game?
-    return false if win?(x_player.piece) || win?(o_player.piece)
-    board.each { |square| return false if square.nil? }
-    true
+    EndStateChecker.new(board).draw?
   end
 
   def turn
@@ -47,7 +50,7 @@ class Game
     if whose_turn.human?
       placement_index = request_placement_index
     else
-      placement_index = AIMoveChooser.call(game: self, protagonist_piece: whose_turn.piece)
+      placement_index = AIMoveChooser.call(board: board, protagonist_piece: whose_turn.piece)
     end
 
     place(placement_index.to_i)

@@ -1,8 +1,12 @@
 require_relative "spec_helper"
-require_relative "../app/services/win_checker.rb"
+require_relative "../app/services/end_state_checker.rb"
 
-RSpec.describe WinChecker do
-  subject { described_class.new(board: board, piece: "X") }
+RSpec.describe EndStateChecker do
+  subject do
+    esc = described_class.new(board)
+    esc.instance_variable_set(:@piece, "X")
+    esc
+  end
 
   describe "#nw_se_diagonal_win?" do
     context "when there is a NW-SE victory for the piece" do
@@ -15,7 +19,7 @@ RSpec.describe WinChecker do
       end
 
       it "returns true" do
-        expect(subject.send :nw_se_diagonal_win?).to eq(true)
+        expect(subject.send(:nw_se_diagonal_win?)).to eq(true)
       end
     end
 
@@ -29,7 +33,7 @@ RSpec.describe WinChecker do
       end
 
       it "returns true" do
-        expect(subject.send :nw_se_diagonal_win?).to eq(false)
+        expect(subject.send(:nw_se_diagonal_win?)).to eq(false)
       end
     end
   end
@@ -45,7 +49,7 @@ RSpec.describe WinChecker do
       end
 
       it "returns true" do
-        expect(subject.send :ne_sw_diagonal_win?).to eq(true)
+        expect(subject.send(:ne_sw_diagonal_win?)).to eq(true)
       end
     end
 
@@ -59,7 +63,7 @@ RSpec.describe WinChecker do
       end
 
       it "returns true" do
-        expect(subject.send :ne_sw_diagonal_win?).to eq(false)
+        expect(subject.send(:ne_sw_diagonal_win?)).to eq(false)
       end
     end
   end
@@ -75,7 +79,7 @@ RSpec.describe WinChecker do
       end
 
       it "returns true" do
-        expect(subject.send :horizontal_win?).to eq(true)
+        expect(subject.send(:horizontal_win?)).to eq(true)
       end
     end
 
@@ -89,7 +93,7 @@ RSpec.describe WinChecker do
       end
 
       it "returns true" do
-        expect(subject.send :horizontal_win?).to eq(false)
+        expect(subject.send(:horizontal_win?)).to eq(false)
       end
     end
   end
