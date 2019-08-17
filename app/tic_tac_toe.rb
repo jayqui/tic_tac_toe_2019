@@ -2,19 +2,22 @@ require 'pry'
 
 # TODO: require all in ./services
 require_relative "player.rb"
-require_relative "services/intro_sequence.rb"
+# require_relative "services/cli_sequences.rb"
+require_relative "services/input_validator.rb"
+require_relative "services/win_checker.rb"
 
 class TicTacToe
   # include CliSequences
 
   attr_reader :p1, :p2
-  attr_accessor :board, :whose_turn
+  attr_accessor :board, :input_errors, :whose_turn
 
   def initialize(p1_name:, p2_name:)
     @board = Array.new(9)
     @p1 = Player.new(name: p1_name, piece: "X")
     @p2 = Player.new(name: p2_name, piece: "O")
     @whose_turn = @p1
+    @input_errors = {}
   end
 
   def self.start
@@ -27,18 +30,18 @@ class TicTacToe
   end
 
   def play_game
-    while game_not_over?
+    while !game_over?
       turn
       self.whose_turn = whose_turn == p1 ? p2 : p1
     end
   end
 
-  def game_not_over?
-    !game_over?
+  def game_over?
+    cats_game? || win?(p1.piece) || win?(p2.piece)
   end
 
-  def game_over?
-    cats_game?
+  def win?(piece)
+    WinChecker.call(board: board, piece: piece)
   end
 
   def cats_game?
@@ -54,19 +57,18 @@ class TicTacToe
     print "> "
 
     placement_index = gets.chomp
-    while !("0".."8").include?(placement_index)
-      puts "Must be a number from 0-8, silly!"
-      print "> "
-      placement_index = gets.chomp
-    end
 
-    while board[placement_index.to_i]
-      puts "Square is already taken. Try again . . ."
+    while invalid_input?(placement_index)
+      input_errors.each_value { |error_message| puts error_message }
       print "> "
       placement_index = gets.chomp
     end
 
     place(whose_turn.piece, placement_index.to_i)
+  end
+
+  def invalid_input?(placement_index)
+    !InputValidator.valid_placement_index?(self, placement_index)
   end
 
   def print_board
